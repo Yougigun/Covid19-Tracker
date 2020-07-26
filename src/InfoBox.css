@@ -1,5 +1,7 @@
 .infoBox{
-    flex:0.32
+    flex:0.32;
+    /* overflow: auto; */
+    /* word-wrap:break-word; */
     /* width: 32%; */
     /* height: 50px; */
 }

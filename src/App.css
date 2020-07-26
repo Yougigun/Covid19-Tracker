@@ -34,3 +34,10 @@ body{
     flex-direction: column;
   }
 }
+
+@media(max-width:320px){
+  .app__stats{
+    flex-direction: column;
+    text-align: center;
+  }
+}
