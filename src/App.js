@@ -13,8 +13,14 @@ import Map from "./Map"
 function App() {
   const [countries, setCountries] = useState([])
   const [country, setCountry] = useState("worldwide")
-  const [countryInfo,setCountryInfo] = useState(null)
+  const [countryInfo, setCountryInfo] = useState(null)
 
+  useEffect(() => {
+    const url = "https://disease.sh/v3/covid-19/all"
+    fetch(url).then(res => res.json()).then(data => {
+      setCountryInfo(data)
+    })
+  }, [])
   useEffect(() => {
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
@@ -28,27 +34,21 @@ function App() {
           ))
           setCountries(countries)
         })
-      const url = "https://disease.sh/v3/covid-19/countries/ES"
-      await fetch(url).then(res=>res.json()).then(data=>{
-        setCountry("ES")
-        // All of the data ...
-        // from the country code
-        setCountryInfo(data)})
     }
     getCountriesData()
   }, [])
   // https://disease.sh/v3/covid-19/countries
   const onCountryChange = async (event) => {
     const countryCode = event.target.value
-    const url = countryCode ==="worldwide"?
-    "https://disease.sh/v3/covid-19/countries/all"
-    :`https://disease.sh/v3/covid-19/countries/${countryCode}`
-    await fetch(url).then(res=>res.json()).then(data=>{
+    const url = countryCode === "worldwide" ?
+      "https://disease.sh/v3/covid-19/all"
+      : `https://disease.sh/v3/covid-19/countries/${countryCode}`
+    await fetch(url).then(res => res.json()).then(data => {
       setCountry(countryCode)
       // All of the data ...
       // from the country code
       setCountryInfo(data)
-      console.log("COUNTRY INFO >>>",data);
+      console.log("COUNTRY INFO >>>", data);
     })
   }
   return (
@@ -63,21 +63,21 @@ function App() {
             >
               <MenuItem value="worldwide">Worldwide</MenuItem>
               {
-                countries.map((country,i) => <MenuItem key={i} value={country.value}>{country.name}</MenuItem>)
+                countries.map((country, i) => <MenuItem key={i} value={country.value}>{country.name}</MenuItem>)
               }
             </Select>
           </FormControl>
         </div>
         <div className="app__stats">
-          <InfoBox title="Coronavirus Cases" 
-                  cases={countryInfo? countryInfo.todayCases:"loading..."} 
-                  total={countryInfo? countryInfo.cases:"loading..."}/>
-          <InfoBox title="Recovered" 
-                  cases={countryInfo? countryInfo.todayRecovered:"loading..."}  
-                  total={countryInfo? countryInfo.recovered:"loading..."} />
-          <InfoBox title="Deaths" 
-                  cases={countryInfo? countryInfo.todayDeaths:"loading..."} 
-                  total={countryInfo? countryInfo.deaths:"loading..."}  />
+          <InfoBox title="Coronavirus Cases"
+            cases={countryInfo ? countryInfo.todayCases : "loading..."}
+            total={countryInfo ? countryInfo.cases : "loading..."} />
+          <InfoBox title="Recovered"
+            cases={countryInfo ? countryInfo.todayRecovered : "loading..."}
+            total={countryInfo ? countryInfo.recovered : "loading..."} />
+          <InfoBox title="Deaths"
+            cases={countryInfo ? countryInfo.todayDeaths : "loading..."}
+            total={countryInfo ? countryInfo.deaths : "loading..."} />
         </div>
 
         {/* Table */}
