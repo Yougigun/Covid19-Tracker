@@ -11,7 +11,10 @@ function InfoBox({title, cases, total}) {
                         {title} 
                     </Typography>
                     {/* Number of Cases */}
-                    <h2 className="infoBox__cases">{cases} </h2>
+                    <div style={{display:"flex",alignItems:"center"}}>
+                        <h2 className="infoBox__cases">{cases}</h2>
+                        <span style={{marginLeft:"5px"}}>Today</span>
+                    </div>
                     {/* Total*/}
                     <Typography className="infoBox__total" color="textSecondary">
                         {total} Total
