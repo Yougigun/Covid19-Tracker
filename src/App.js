@@ -13,20 +13,29 @@ import InfoBox from "./InfoBox"
 import Map from "./Map"
 import Table from "./Table"
 import LineGraph from './LineGraph'
+import "leaflet/dist/leaflet.css"
 function App() {
   const [countries, setCountries] = useState([])
   const [country, setCountry] = useState("worldwide")
   const [countryInfo, setCountryInfo] = useState(null)
   const [tableData, setTableData] = useState([])
+  const [mapCenter, setMapCenter] = useState({
+    lat:34.80746,lng:-40.4796
+  })
 
+  const [mapZoom, setMapZoom] = useState(2)
 
   useEffect(() => {
+    // Get worldwide data
+    console.log("useEffect-1")
     const url = "https://disease.sh/v3/covid-19/all"
     fetch(url).then(res => res.json()).then(data => {
       setCountryInfo(data)
     })
   }, [])
   useEffect(() => {
+    //Get all countries data for table
+    console.log("useEffect-2")
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
         .then((response) => response.json())
@@ -46,15 +55,16 @@ function App() {
   }, [])
   // https://disease.sh/v3/covid-19/countries
   const onCountryChange = async (event) => {
+    console.log("onCountryChange")
     const countryCode = event.target.value
     const url = countryCode === "worldwide" ?
       "https://disease.sh/v3/covid-19/all"
       : `https://disease.sh/v3/covid-19/countries/${countryCode}`
     await fetch(url).then(res => res.json()).then(data => {
       setCountry(countryCode)
-      // All of the data ...
-      // from the country code
       setCountryInfo(data)
+      setMapCenter([data.countryInfo.lat,data.countryInfo.long])
+      setMapZoom(4)
     })
   }
   return (
@@ -89,16 +99,17 @@ function App() {
         {/* Graph */}
 
         {/* Map */}
-        <Map />
+        <Map 
+          center={mapCenter}
+          zoom={mapZoom}
+        />
       </div>
       <Card className="app__right" >
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries={tableData}/>
-          {/* Graph */}
           <h3 style={{marginTop:"10px"}}>Worldwide New Cases</h3>
           <LineGraph />
-          
         </CardContent>
       </Card>
     </div>
