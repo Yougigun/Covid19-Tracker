@@ -12,6 +12,7 @@ import './App.css';
 import InfoBox from "./InfoBox"
 import Map from "./Map"
 import Table from "./Table"
+import LineGraph from './LineGraph'
 function App() {
   const [countries, setCountries] = useState([])
   const [country, setCountry] = useState("worldwide")
@@ -60,7 +61,7 @@ function App() {
     <div className="app">
       <div className="app__left">
         <div className="app__header">
-          <h1>COVID-19 TRACKER</h1>
+          <h1>COVID-19 TRACKER - Gary</h1>
           <FormControl className="app__dropdown">
             <Select variant="outlined"
               value={country}
@@ -92,11 +93,12 @@ function App() {
       </div>
       <Card className="app__right" >
         <CardContent>
-          {/* Table */}
           <h3>Live Cases by Country</h3>
           <Table countries={tableData}/>
           {/* Graph */}
-          <h3>Worldwide New Cases ##Not Finished</h3>
+          <h3 style={{marginTop:"10px"}}>Worldwide New Cases</h3>
+          <LineGraph />
+          
         </CardContent>
       </Card>
     </div>
