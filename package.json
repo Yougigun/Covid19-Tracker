@@ -17,7 +17,7 @@
     "react-leaflet": "^2.7.0",
     "react-scripts": "3.4.1"
   },
-  "homepage": "https://yougigun.github.io/Covid19-Tracker",
+    "homepage": "https://yougigun.github.io/Covid19-Tracker",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
