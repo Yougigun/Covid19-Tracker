@@ -96,10 +96,8 @@ function LineGraph({ casesType }) {
             })
     }, [casesType])
 
-    // console.log("data>>>>", data);
     return (
         <div className="lineGraph">
-            {/* <h1>I am a Graph</h1> */}
             <Line
                 data={{
                     datasets: [
