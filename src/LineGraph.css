@@ -1,11 +1,13 @@
 .lineGraph{
     margin-top: 10px;
 }
-canvas{
-  height: 235px !important;
+.lineGraph canvas{
+  margin-top: 25px;
+  height: 205px !important;
+  /* height: 100% !important; */
 }
 @media(max-width:414px){
-    canvas{
+  .lineGraph canvas{
       width: 100% !important;
     }
   }
