@@ -64,7 +64,4 @@ body{
     /* justify-content: center; */
 
   }
-  canvas{
-    width: 100% !important;
-  }
 }

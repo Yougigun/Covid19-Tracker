@@ -1,7 +1,9 @@
 .lineGraph{
     margin-top: 10px;
 }
-
+canvas{
+  height: 235px !important;
+}
 @media(max-width:414px){
     canvas{
       width: 100% !important;
