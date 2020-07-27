@@ -45,6 +45,28 @@ const options = {
         ]
     }
 }
+
+const casesTypeColors = {
+    cases:{
+        hex:"#CC1031",
+        rgb:"rgb(204,16,52)",
+        half_op:"rgba(204,16,52,0.5)",
+        multiplier:800
+    },
+    recovered:{
+        hex:"#7dd71d",
+        rgb:"rgb(125,215,29)",
+        half_op:"rgba(125,215,29,0.5)",
+        multiplier:1200
+    },
+    deaths:{
+        hex:"#fb4443",
+        rgb:"rgb(251,68,67)",
+        half_op:"rgba(251,68,67,0.5)",
+        multiplier:2000
+    }
+}
+
 const buildChartData = (data, casesType = "cases") => {
     const chartData = []
     let lastDataPoint
@@ -61,20 +83,20 @@ const buildChartData = (data, casesType = "cases") => {
     }
     return chartData
 }
-function LineGraph({ caseType }) {
+function LineGraph({ casesType }) {
     const [data, setData] = useState([])
     // "https://disease.sh/v3/covid-19/historical/all?lastdays=120"
     useEffect(() => {
         fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
             .then(res => res.json())
             .then(data => {
-                const chartData = buildChartData(data)
+                const chartData = buildChartData(data,casesType)
                 console.log(chartData);
                 setData(chartData)
             })
-    }, [caseType])
+    }, [casesType])
 
-    console.log("data>>>>", data);
+    // console.log("data>>>>", data);
     return (
         <div className="lineGraph">
             {/* <h1>I am a Graph</h1> */}
@@ -83,8 +105,8 @@ function LineGraph({ caseType }) {
                     datasets: [
                         {
                             data: data,
-                            backgroundColor: "rgba(204,16,52,0.5)",
-                            borderColor: "#CC1034"
+                            backgroundColor:  casesTypeColors[casesType].half_op,
+                            borderColor: casesTypeColors[casesType].rgb
                         }
                     ]
                 }}

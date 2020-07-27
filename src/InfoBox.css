@@ -1,7 +1,36 @@
 .infoBox{
     flex:0.32;
+    cursor: pointer;
     /* overflow: auto; */
     /* word-wrap:break-word; */
     /* width: 32%; */
     /* height: 50px; */
+}
+
+.infoBox__cases{
+    color: red;
+    /* font-weight: 600;
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem; */
+}
+.infoBox_recoverFont{
+    color: rgba(125,215,29,0.5) !important;
+}
+.infoBox__total{
+    color: #6c757d !important;
+    /* font-weight: 700 !important;
+    font-size: 0.8rem !important;
+    margin-top: 15px !important;  */
+}
+
+.InfoBox--selected--cases{
+    border-top: 10px solid rgba(204,16,52,0.5)
+}
+
+.InfoBox--selected--recovered{
+    border-top: 10px solid rgba(125,215,29,0.5);
+}
+
+.InfoBox--selected--deaths{
+    border-top: 10px solid rgba(251,68,67,0.5)
 }

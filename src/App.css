@@ -10,12 +10,21 @@ body{
   justify-content: space-evenly;
   flex-wrap: wrap;
   padding: 20px;
+  /* box-sizing:border-box ; */
 }
 .app__header{
   display: flex;
   align-items: center;
   margin-bottom: 20px;
   justify-content: space-between;
+}
+.app__header > h1{
+  color: red;
+  font-size: 2rem;
+}
+
+.app__dropdown{
+  background-color: white;
 }
 
 .app__stats{
@@ -35,9 +44,27 @@ body{
   }
 }
 
-@media(max-width:320px){
+@media(max-width:585px){
+  .app__header{
+    flex-direction: column;
+  }
   .app__stats{
     flex-direction: column;
     text-align: center;
+    font-size: 3ex;
+  }
+}
+
+@media(max-width:414px){
+  .app__header{
+    flex-direction: column;
+  }
+  .app{
+    padding: 5px;
+    /* justify-content: center; */
+
+  }
+  canvas{
+    width: 100% !important;
   }
 }

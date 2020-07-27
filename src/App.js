@@ -7,7 +7,7 @@ import {
   CardContent,
 } from "@material-ui/core"
 
-import {sortData} from './util'
+import {sortData, prettyPrintStat} from './util'
 import './App.css';
 import InfoBox from "./InfoBox"
 import Map from "./Map"
@@ -22,8 +22,9 @@ function App() {
   const [mapCenter, setMapCenter] = useState({
     lat:34.80746,lng:-40.4796
   })
-
   const [mapZoom, setMapZoom] = useState(2)
+  const [mapCountries,setMapCountries] = useState([])
+  const [casesType, setCasesType] = useState('cases')
 
   useEffect(() => {
     // Get worldwide data
@@ -31,7 +32,7 @@ function App() {
     const url = "https://disease.sh/v3/covid-19/all"
     fetch(url).then(res => res.json()).then(data => {
       setCountryInfo(data)
-    })
+    }).catch((error)=>{console.log("error>>>>","https://disease.sh/v3/covid-19/all",error)})
   }, [])
   useEffect(() => {
     //Get all countries data for table
@@ -49,7 +50,8 @@ function App() {
           const sortedData = sortData(data)
           setTableData(sortedData)
           setCountries(countries)
-        })
+          setMapCountries(data)
+        }).catch((error)=>{console.log("error>>>>","https://disease.sh/v3/covid-19/countries",error)})
     }
     getCountriesData()
   }, [])
@@ -63,9 +65,14 @@ function App() {
     await fetch(url).then(res => res.json()).then(data => {
       setCountry(countryCode)
       setCountryInfo(data)
-      setMapCenter([data.countryInfo.lat,data.countryInfo.long])
-      setMapZoom(4)
-    })
+      if (countryCode!=="worldwide"){
+        setMapCenter([data.countryInfo.lat,data.countryInfo.long])
+        setMapZoom(4)
+      }else{
+        setMapCenter([23.69,120.96])
+        setMapZoom(4)
+      }
+    }).catch((error)=>{console.log("error>>>>","https://disease.sh/v3/covid-19/countries[all]",error)})
   }
   return (
     <div className="app">
@@ -85,21 +92,31 @@ function App() {
           </FormControl>
         </div>
         <div className="app__stats">
-          <InfoBox title="Coronavirus Cases"
-            cases={countryInfo ? countryInfo.todayCases : "loading..."}
-            total={countryInfo ? countryInfo.cases : "loading..."} />
-          <InfoBox title="Recovered"
-            cases={countryInfo ? countryInfo.todayRecovered : "loading..."}
-            total={countryInfo ? countryInfo.recovered : "loading..."} />
-          <InfoBox title="Deaths"
-            cases={countryInfo ? countryInfo.todayDeaths : "loading..."}
-            total={countryInfo ? countryInfo.deaths : "loading..."} />
+          <InfoBox 
+            active={casesType==="cases"}
+            title="Covid-19 Cases" 
+            selectedType="InfoBox--selected--cases"
+            onClick={e=>setCasesType('cases')}
+            cases={countryInfo ? prettyPrintStat(countryInfo.todayCases) : "loading..."}
+            total={countryInfo ? prettyPrintStat(countryInfo.cases) : "loading..."} />
+          <InfoBox 
+            active={casesType==="recovered"}
+            selectedType="InfoBox--selected--recovered"
+            title="Recovered" 
+            onClick={e=>setCasesType('recovered')}
+            cases={countryInfo ? prettyPrintStat(countryInfo.todayRecovered) : "loading..."}
+            total={countryInfo ? prettyPrintStat(countryInfo.recovered) : "loading..."} />
+          <InfoBox 
+            active={casesType==="deaths"}
+            selectedType="InfoBox--selected--deaths"
+            title="Deaths" 
+            onClick={e=>setCasesType('deaths')}
+            cases={countryInfo ? prettyPrintStat(countryInfo.todayDeaths) : "loading..."}
+            total={countryInfo ? prettyPrintStat(countryInfo.deaths) : "loading..."} />
         </div>
-
-        {/* Graph */}
-
-        {/* Map */}
         <Map 
+          casesType={casesType}
+          countries={mapCountries}
           center={mapCenter}
           zoom={mapZoom}
         />
@@ -108,8 +125,8 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries={tableData}/>
-          <h3 style={{marginTop:"10px"}}>Worldwide New Cases</h3>
-          <LineGraph />
+          <h3 style={{marginTop:"10px"}}>Worldwide New {casesType}</h3>
+          <LineGraph casesType={casesType}/>
         </CardContent>
       </Card>
     </div>
